@@ -1,43 +1,10 @@
 import streamlit as st
 
-# Estilos personalizados
+# Color coral para los títulos
 st.markdown("""
     <style>
-    .main-title {
-        font-size: 48px;
-        font-weight: bold;
-        color: #007BFF;
-        text-align: center;
-    }
-    .header-text {
-        font-size: 32px;
-        font-weight: bold;
-        color: #FF5733;
-        margin-top: 20px;
-        text-align: center;
-    }
-    .selectbox-label {
-        color: #5DADE2;
-        font-size: 20px;
-    }
-    .stButton>button {
-        background-color: #28B463;
-        color: white;
-        border-radius: 10px;
-        padding: 10px 20px;
-    }
-    .stButton>button:hover {
-        background-color: #1D8348;
-    }
-    .navigation-button {
-        background-color: #3498DB;
-        color: white;
-        font-size: 18px;
-        border-radius: 10px;
-        padding: 10px 20px;
-    }
-    .navigation-button:hover {
-        background-color: #2E86C1;
+    .header-title {
+        color: coral;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -48,37 +15,50 @@ if "role" not in st.session_state:
 ROLES = [None, "PC", "Professor", "Team"]
 
 def login():
-    st.markdown('<h2 class="header-text">Log in</h2>', unsafe_allow_html=True)
-    role = st.selectbox("Choose your role", ROLES, key="role", format_func=lambda x: x if x else "Select a role")
+    st.markdown('<h2 class="header-title">Log in</h2>', unsafe_allow_html=True)
+    role = st.selectbox("Choose your role", ROLES)
 
     if st.button("Log in"):
         st.session_state.role = role
-        st.experimental_rerun()
+        st.rerun()
 
 def logout():
-    st.markdown('<h2 class="header-text">Log out</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="header-title">Log out</h2>', unsafe_allow_html=True)
 
     if st.button("Log out"):
         st.session_state.role = None
-        st.experimental_rerun()
+        st.rerun()
 
 role = st.session_state.role
+logout_page = st.Page(logout, title="Log out", icon=":material/logout:")
+settings = st.Page("settings.py", title="Settings", icon=":material/settings:")
 
-# Custom navigation icons and titles
-logout_page = st.Page(logout, title="Log out", icon="🔒")
-settings = st.Page("settings.py", title="Settings", icon="⚙️")
-visualization = st.Page("Visualization/visualization.py", title="Dashboard", icon="📊", default=(role == "Requester"))
-ml = st.Page("ml/ml_analysis.py", title="Machine Learning", icon="🤖", default=(role == "Responder"))
-eda = st.Page("EDA/eda.py", title="Exploratory Data Analysis", icon="🔍", default=(role == "Admin"))
+visualization = st.Page(
+    "Visualization/visualization.py",
+    title="Dashboard",
+    icon=":material/help:",
+    default=(role == "Requester"),
+)
 
+ml = st.Page(
+    "ml/ml_analysis.py",
+    title="Machine Learning",
+    icon=":material/healing:",
+    default=(role == "Responder"),
+)
+eda = st.Page(
+    "EDA/eda.py",
+    title="Exploratory Data Analysis",
+    icon=":material/person_add:",
+    default=(role == "Admin"),
+)
 account_pages = [logout_page, settings]
 visualization_pages = [visualization]
 ml_pages = [ml]
 eda_pages = [eda]
 
-# Main title
-st.markdown('<h1 class="main-title">Data Analytics Dashboard</h1>', unsafe_allow_html=True)
-st.image("images/horizontal_blue.png", use_column_width=True)
+st.markdown('<h1 class="header-title">Data Analytics Dashboard by [Jimena Vivas Hernández] 🌸</h1>', unsafe_allow_html=True)
+st.logo("images/horizontal_blue.png", icon_image="images/icon_blue.png")
 
 page_dict = {}
 
